@@ -54,7 +54,7 @@ Hexes FrameI::build() const
       return {};
    }
    retVal.push_back(*address_);
-   printHex("ADDR: ", *address_);
+   LOG(debug) << toString("ADDR: ", *address_);
 
    if (not ctrl_)
    {
@@ -62,7 +62,7 @@ Hexes FrameI::build() const
       return {};
    }
    retVal.push_back(*ctrl_);
-   printHex("CTRL: ", *ctrl_);
+   LOG(debug) << toString("CTRL: ", *ctrl_);
 
    if (not procedureCode_)
    {
@@ -70,13 +70,13 @@ Hexes FrameI::build() const
       return {};
    }
    retVal.push_back(*procedureCode_);
-   printHex("PROC: ", *procedureCode_);
+   LOG(debug) << toString("PROC: ", *procedureCode_);
 
    for (const auto& it : parLength_)
    {
       retVal.push_back(it);
    }
-   printFrame("PAR LENGTH: ", parLength_);
+   LOG(debug) << toString("PAR LENGTH: ", parLength_);
 
    if (not parValues_.empty())
    {
@@ -84,8 +84,7 @@ Hexes FrameI::build() const
       {
          retVal.push_back(it);
       }
-
-      printFrame("PAR VALUES: ", parValues_);
+      LOG(debug) << toString("PAR VALUES: ", parValues_);
    }
 
    LOG(info) << "HDLC': " << toString(retVal);

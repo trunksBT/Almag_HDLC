@@ -15,7 +15,7 @@ Hexes HDLCFrame::build() const
    Hexes retVal;
 
    retVal.push_back(START_STOP_FLAG);
-   printHex("START: ", START_STOP_FLAG);
+   LOG(debug) << toString("START: ", START_STOP_FLAG);
 
    const auto primFrame = hdlcFrameBody_->build();
 
@@ -26,7 +26,7 @@ Hexes HDLCFrame::build() const
       CRC.begin(), CRC.end() );
 
    retVal.push_back(START_STOP_FLAG);
-   printHex("STOP: ", START_STOP_FLAG);
+   LOG(debug) << toString("STOP: ", START_STOP_FLAG);
 
    LOG(debug) << "HDLC: " << toString(retVal);
    return retVal; 

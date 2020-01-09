@@ -60,7 +60,7 @@ Hexes FrameXID::build() const
       return {};
    }
    retVal.push_back(*address_);
-   printHex("ADDR: ", *address_);
+   LOG(debug) << toString("ADDR: ", *address_);
 
    if (not ctrl_)
    {
@@ -68,7 +68,7 @@ Hexes FrameXID::build() const
       return {};
    }
    retVal.push_back(*ctrl_);
-   printHex("CTRL: ", *ctrl_);
+   LOG(debug) << toString("CTRL: ", *ctrl_);
 
    if (not formatIdentifier_)
    {
@@ -76,7 +76,7 @@ Hexes FrameXID::build() const
       return {};
    }
    retVal.push_back(*formatIdentifier_);
-   printHex("FI: ", *formatIdentifier_);
+   LOG(debug) << toString("FI: ", *formatIdentifier_);
 
    if (not groupIdentifier_)
    {
@@ -84,7 +84,7 @@ Hexes FrameXID::build() const
       return {};
    }
    retVal.push_back(*groupIdentifier_);
-   printHex("GI: ", *groupIdentifier_);
+   LOG(debug) << toString("GI: ", *groupIdentifier_);
 
    if (not groupLength_)
    {
@@ -92,19 +92,19 @@ Hexes FrameXID::build() const
       return {};
    }
    retVal.push_back(*groupLength_);
-   printHex("GL: ", *groupLength_);
+   LOG(debug) << toString("GL: ", *groupLength_);
 
    for (const auto& it : parameters_)
    {
       retVal.push_back(it.parId);
       LOG(debug) << "--------------";
-      printHex("PI: ", it.parId);
+      LOG(debug) << toString("PI: ", it.parId);
 
       retVal.push_back(it.parLength);
-      printHex("PL: ", it.parLength);
+      LOG(debug) << toString("PL: ", it.parLength);
 
       retVal.insert( retVal.end(), it.parValue.begin(), it.parValue.end() );
-      printFrame("PV: ", it.parValue);
+      LOG(debug) << toString("PV: ", it.parValue);
       LOG(debug) << "--------------";
    }
 

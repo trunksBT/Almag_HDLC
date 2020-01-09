@@ -77,9 +77,9 @@ int addHdlcParametersAndReturnPosition(std::vector<HDLCParametersValues> &parame
    auto parId = toHexInt(slicedVector.at(i + IDX_OF_SUBGROUP_PAR_ID));
    auto parLen = toInt(slicedVector.at(i + IDX_OF_SUBGROUP_LENGTH_BYTE));
    auto parVals = slice(slicedVector, i + IDX_OF_SUBGROUP_VALUES_START, parLen);
-   LOG(debug) << "ParId: " << parId;
-   LOG(debug) << "ParLen: " << parLen;
-   LOG(debug) << "ParVals: ";
+   LOG(trace) << "ParId: " << parId;
+   LOG(trace) << "ParLen: " << parLen;
+   LOG(trace) << "ParVals: ";
    printStrings(parVals);
    i+=(parLen+OFFSET_FOR_IDX_OF_SUBGROUP_VALUES);
    parameters.push_back(HDLCParametersValues::build(parId, parLen, toHexes(toHexesInt(parVals))));
@@ -165,7 +165,7 @@ HDLCFrameBodyInterpreter::~HDLCFrameBodyInterpreter()
 HDLCFrameBodyPtr HDLCFrameBodyInterpreter::apply(const std::string& receivedPlainFrame)
 {
    const std::vector<std::string> lexedInput{ lex(receivedPlainFrame, SPACE) };
-   LOG(info) << "Input: " << toString(lexedInput);
+   LOG(trace) << "Input: " << toString(lexedInput);
    HexInt ctrlByte = toHexInt(lexedInput.at(IDX_OF_CTRL_BYTE));
 
    if (BYTE_CONTROL::XID == ctrlByte)

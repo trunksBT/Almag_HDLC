@@ -36,10 +36,10 @@ Hexes FrameU::build() const
       return {};
    }
    retVal.push_back(*address_);
-   printHex("ADDR: ", *address_);
+   LOG(debug) << toString("ADDR: ", *address_);
 
    retVal.push_back(*ctrl_);
-   printHex("CTRL: ", *ctrl_);
+   LOG(debug) << toString("CTRL: ", *ctrl_);
 
    LOG(info) << "HDLC': " << toString(retVal);
    return retVal;
