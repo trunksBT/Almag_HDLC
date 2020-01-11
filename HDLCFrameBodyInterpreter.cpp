@@ -6,35 +6,33 @@
 #include <HDLC/MessagesHelpers.hpp>
 #include <Utils/Logger.hpp>
 #include <Utils/Functions.hpp>
-#include <Utils/PrintUtils.hpp>
 
 using namespace convert;
 using namespace funs;
-using namespace printUtils;
 
 namespace
 {
+const std::string ZERO_STRING = "0";
 constexpr const char* SPACE = " ";
+constexpr int HEX_BASE = 16;
 constexpr unsigned IDX_OF_ADDR_BYTE = 0;
 constexpr unsigned IDX_OF_CTRL_BYTE = 1;
-constexpr unsigned IDX_OF_PROC_BYTE = 2;
-constexpr unsigned IDX_OF_LENGTH_BYTE_FST_BIG_END = 3;
-constexpr unsigned IDX_OF_LENGTH_BYTE_SND_BIG_END = 4;
-constexpr unsigned IDX_OF_VAL_BYTE = 5;
 constexpr unsigned IDX_OF_FORMAT_ID_BYTE = 2;
 constexpr unsigned IDX_OF_GROUP_ID_BYTE = 3;
 constexpr unsigned IDX_OF_GROUP_LENGTH_BYTE = 4;
 constexpr unsigned IDX_OF_HDLC_PARAMETERS_START = 5;
-constexpr unsigned IDX_OF_SUBGROUP_PAR_ID = 0;
+constexpr unsigned IDX_OF_LENGTH_BYTE_FST_BIG_END = 3;
+constexpr unsigned IDX_OF_LENGTH_BYTE_SND_BIG_END = 4;
+constexpr unsigned IDX_OF_PROC_BYTE = 2;
 constexpr unsigned IDX_OF_SUBGROUP_LENGTH_BYTE = 1;
+constexpr unsigned IDX_OF_SUBGROUP_PAR_ID = 0;
 constexpr unsigned IDX_OF_SUBGROUP_VALUES_START = 2;
+constexpr unsigned IDX_OF_VAL_BYTE = 5;
 constexpr unsigned OFFSET_FOR_IDX_OF_SUBGROUP_VALUES = 2;
-constexpr int HEX_BASE = 16;
-const std::string ZERO_STRING = "0";
 
 HexInt toHexInt(const std::string receivedByteStr)
 {
-   std::istringstream byteStrStream{receivedByteStr};
+   std::istringstream byteStrStream{ receivedByteStr };
    HexInt byteHex;
    byteStrStream >> std::hex >> byteHex;
    return byteHex;
@@ -47,8 +45,8 @@ int toInt(const std::string receivedByteStr)
 
 Strings slice(const Strings& inVec, int idxOfStart, int length)
 {
-   auto first = inVec.cbegin() + idxOfStart;
-   auto last  = inVec.cbegin() + idxOfStart + length;
+   auto first{ inVec.cbegin() + idxOfStart };
+   auto last{ inVec.cbegin() + idxOfStart + length };
    return Strings{first, last};
 }
 
@@ -74,13 +72,13 @@ Hexes toHexes(const HexesInt& plainFrames)
 
 int addHdlcParametersAndReturnPosition(std::vector<HDLCParametersValues> &parameters, const Strings &slicedVector, int i)
 {
-   auto parId = toHexInt(slicedVector.at(i + IDX_OF_SUBGROUP_PAR_ID));
-   auto parLen = toInt(slicedVector.at(i + IDX_OF_SUBGROUP_LENGTH_BYTE));
-   auto parVals = slice(slicedVector, i + IDX_OF_SUBGROUP_VALUES_START, parLen);
+   auto parId{ toHexInt(slicedVector.at(i + IDX_OF_SUBGROUP_PAR_ID)) };
+   auto parLen{ toInt(slicedVector.at(i + IDX_OF_SUBGROUP_LENGTH_BYTE)) };
+   auto parVals{ slice(slicedVector, i + IDX_OF_SUBGROUP_VALUES_START, parLen) };
    LOG(trace) << "ParId: " << parId;
    LOG(trace) << "ParLen: " << parLen;
    LOG(trace) << "ParVals: ";
-   printStrings(parVals);
+   LOG(debug) << toString(parVals);
    i+=(parLen+OFFSET_FOR_IDX_OF_SUBGROUP_VALUES);
    parameters.push_back(HDLCParametersValues::build(parId, parLen, toHexes(toHexesInt(parVals))));
    return i;
@@ -125,9 +123,9 @@ HDLCFrameBodyPtr interpretBodyFrameXID(const Strings& receivedPlainFrame)
        .setGroupLengthByte(toHexInt(receivedPlainFrame.at(IDX_OF_GROUP_LENGTH_BYTE)));
 
    std::vector<HDLCParametersValues> parameters;
-   const auto groupLength = toInt(receivedPlainFrame.at(IDX_OF_GROUP_LENGTH_BYTE));
-   const auto slicedVector = slice(receivedPlainFrame, IDX_OF_HDLC_PARAMETERS_START, groupLength);
-   unsigned int idxOfSubgroupStart = 0;
+   const auto groupLength{ toInt(receivedPlainFrame.at(IDX_OF_GROUP_LENGTH_BYTE)) };
+   const auto slicedVector{ slice(receivedPlainFrame, IDX_OF_HDLC_PARAMETERS_START, groupLength) };
+   unsigned int idxOfSubgroupStart{ 0 };
 
    while (idxOfSubgroupStart != slicedVector.size())
       idxOfSubgroupStart = addHdlcParametersAndReturnPosition(parameters, slicedVector, idxOfSubgroupStart);
@@ -166,7 +164,7 @@ HDLCFrameBodyPtr HDLCFrameBodyInterpreter::apply(const std::string& receivedPlai
 {
    const std::vector<std::string> lexedInput{ lex(receivedPlainFrame, SPACE) };
    LOG(trace) << "Input: " << toString(lexedInput);
-   HexInt ctrlByte = toHexInt(lexedInput.at(IDX_OF_CTRL_BYTE));
+   HexInt ctrlByte{ toHexInt(lexedInput.at(IDX_OF_CTRL_BYTE)) };
 
    if (BYTE_CONTROL::XID == ctrlByte)
    {

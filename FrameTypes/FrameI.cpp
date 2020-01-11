@@ -1,9 +1,7 @@
 #include <HDLC/FrameTypes/FrameI.hpp>
 #include <Utils/Functions.hpp>
-#include <Utils/PrintUtils.hpp>
 
 using namespace convert;
-using namespace printUtils;
 
 frameType::BYTE_CTRL FrameI::GET_TYPE=frameType::BYTE_CTRL::I;
 

@@ -1,10 +1,8 @@
 #include <HDLC/HDLCFrame.hpp>
 #include <HDLC/MessagesHelpers.hpp>
-#include <Utils/PrintUtils.hpp>
 #include <Utils/Functions.hpp>
 
 using namespace convert;
-using namespace printUtils;
 
 HDLCFrame::HDLCFrame(HDLCFrameBodyPtr hdlcPrimFrame)
    : hdlcFrameBody_(hdlcPrimFrame)
