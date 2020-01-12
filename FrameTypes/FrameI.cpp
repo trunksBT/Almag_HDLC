@@ -3,8 +3,6 @@
 
 using namespace convert;
 
-frameType::BYTE_CTRL FrameI::GET_TYPE=frameType::BYTE_CTRL::I;
-
 FrameI::FrameI()
    : HDLCFrameBody()
 {

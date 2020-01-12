@@ -3,8 +3,6 @@
 
 using namespace convert;
 
-frameType::BYTE_CTRL FrameU::GET_TYPE=frameType::BYTE_CTRL::U;
-
 FrameU::FrameU()
    : HDLCFrameBody()
 {

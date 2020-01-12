@@ -1,9 +1,9 @@
 #include <HDLC/FrameTypes/FrameXID.hpp>
 #include <Utils/Functions.hpp>
+#include <Utils/Utils.hpp>
 
 using namespace convert;
-
-frameType::BYTE_CTRL FrameXID::GET_TYPE=frameType::BYTE_CTRL::XID;
+using namespace defaultVals;
 
 FrameXID::FrameXID()
    : HDLCFrameBody()
@@ -95,7 +95,7 @@ Hexes FrameXID::build() const
    for (const auto& it : parameters_)
    {
       retVal.push_back(it.parId);
-      LOG(debug) << "--------------";
+      LOG(debug) << HDLC_PARAMETERS_SEPARATOR;
       LOG(debug) << toString("PI: ", it.parId);
 
       retVal.push_back(it.parLength);
@@ -103,7 +103,7 @@ Hexes FrameXID::build() const
 
       retVal.insert( retVal.end(), it.parValue.begin(), it.parValue.end() );
       LOG(debug) << toString("PV: ", it.parValue);
-      LOG(debug) << "--------------";
+      LOG(debug) << HDLC_PARAMETERS_SEPARATOR;
    }
 
    LOG(info) << "HDLC': " << toString(retVal);

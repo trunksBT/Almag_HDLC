@@ -14,7 +14,6 @@ public:
    FrameI& setParameterValues(Hexes values);
 
    Hexes build() const;
-   static frameType::BYTE_CTRL GET_TYPE;
 
 private:
    boost::optional<Hex> procedureCode_;
