@@ -88,8 +88,3 @@ Hexes FrameI::build() const
    LOG(info) << "HDLC': " << toString(retVal);
    return retVal;
 }
-
-frameType::BYTE_CTRL FrameI::getType() const
-{
-   return frameType::BYTE_CTRL::I;
-}

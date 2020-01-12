@@ -14,7 +14,6 @@ public:
    FrameI& setParameterValues(Hexes values);
 
    Hexes build() const;
-   frameType::BYTE_CTRL getType() const override;
    static frameType::BYTE_CTRL GET_TYPE;
 
 private:

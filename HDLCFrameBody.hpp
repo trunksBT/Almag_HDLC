@@ -13,7 +13,6 @@ public:
    virtual ~HDLCFrameBody();
 
    virtual Hexes build() const = 0;
-   virtual frameType::BYTE_CTRL getType() const = 0;
 
 protected:
    boost::optional<Hex> address_;
