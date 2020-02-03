@@ -106,6 +106,6 @@ Hexes FrameXID::build() const
       LOG(debug) << HDLC_PARAMETERS_SEPARATOR;
    }
 
-   LOG(info) << "HDLC': " << toString(retVal);
+   LOG(debug) << "HDLC': " << toString(retVal);
    return retVal;
 }

@@ -37,6 +37,6 @@ Hexes FrameU::build() const
    retVal.push_back(*ctrl_);
    LOG(debug) << toString("CTRL: ", *ctrl_);
 
-   LOG(info) << "HDLC': " << toString(retVal);
+   LOG(debug) << "HDLC': " << toString(retVal);
    return retVal;
 }

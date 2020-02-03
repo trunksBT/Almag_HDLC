@@ -83,6 +83,6 @@ Hexes FrameI::build() const
       LOG(debug) << toString("PAR VALUES: ", parValues_);
    }
 
-   LOG(info) << "HDLC': " << toString(retVal);
+   LOG(debug) << "HDLC': " << toString(retVal);
    return retVal;
 }
