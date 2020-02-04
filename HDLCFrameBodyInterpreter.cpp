@@ -1,4 +1,5 @@
 #include "HDLCFrameBodyInterpreter.hpp"
+#include <deque>
 #include <sstream>
 #include <HDLC/FrameTypes/FrameI.hpp>
 #include <HDLC/FrameTypes/FrameU.hpp>
@@ -68,6 +69,16 @@ Hexes toHexes(const HexesInt& plainFrames)
       retVal.push_back(it);
    }
    return retVal;
+}
+
+Strings trimFlagsAndCRC(Strings&& lexedInput)
+{
+    std::deque<std::string> retVal { lexedInput.begin(), lexedInput.end() };
+    retVal.pop_front(); // FLAG_START
+    retVal.pop_back(); // FLAG_STOP
+    retVal.pop_back(); // CRC[1]
+    retVal.pop_back(); // CRC[0]
+    return { retVal.begin(), retVal.end() };
 }
 
 int addHdlcParametersAndReturnPosition(std::vector<HDLCParametersValues> &parameters, const Strings &slicedVector, int i)
@@ -162,21 +173,22 @@ HDLCFrameBodyInterpreter::~HDLCFrameBodyInterpreter()
 
 HDLCFrameBodyPtr HDLCFrameBodyInterpreter::apply(const std::string& receivedPlainFrame)
 {
-   const std::vector<std::string> lexedInput{ lex(receivedPlainFrame, SPACE) };
+   Strings lexedInput{ lex(receivedPlainFrame, SPACE) };
+   Strings lexedInputWithoutFlagsAndCRC{ trimFlagsAndCRC( std::move(lexedInput )) };
    LOG(trace) << "Input: " << toString(lexedInput);
-   HexInt ctrlByte{ toHexInt(lexedInput.at(IDX_OF_CTRL_BYTE)) };
+   HexInt ctrlByte{ toHexInt(lexedInputWithoutFlagsAndCRC.at(IDX_OF_CTRL_BYTE)) };
 
    if (BYTE_CONTROL::XID == ctrlByte)
    {
-      return interpretBodyFrameXID(lexedInput);
+      return interpretBodyFrameXID(lexedInputWithoutFlagsAndCRC);
    }
    else if (isFrameU(ctrlByte))
    {
-      return interpretBodyFrameU(lexedInput);
+      return interpretBodyFrameU(lexedInputWithoutFlagsAndCRC);
    }
    else if (isFrameI(ctrlByte))
    {
-      return interpretBodyFrameI(lexedInput);
+      return interpretBodyFrameI(lexedInputWithoutFlagsAndCRC);
    }
    
    LOG(error) << "Frame of unknown type";
